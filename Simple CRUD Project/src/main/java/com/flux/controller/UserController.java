@@ -15,24 +15,29 @@ public class UserController {
 	@Autowired
 	UserDAO userDao;
 	
+	ModelAndView mav;
+	
 	@RequestMapping("home")
 	public String home() {
 		return "home.jsp";
 	}
 	
 	@RequestMapping("addUser")
-	public String addUser(UserTable userTable) {
+	public ModelAndView addUser(UserTable userTable) {
+		mav = new ModelAndView("addUser.jsp");
 		userDao.save(userTable);
-		return "home.jsp";
+		mav.addObject(userTable);
+		return mav;
 	}
 	
 	@RequestMapping("getUser")
 	public ModelAndView getUser(@RequestParam int id) {
-		ModelAndView mav = new ModelAndView("showUser.jsp");
 		UserTable userTable = userDao.findById(id).orElse(null);
 		if(userTable == null) {
-			mav.addObject("message","User didn't exist");
+			mav = new ModelAndView("userNotExist.jsp");
+			mav.addObject("message"," view ");
 		}else {
+			mav = new ModelAndView("showUser.jsp");
 			mav.addObject(userTable);
 		}
 		return mav;
@@ -40,22 +45,28 @@ public class UserController {
 	
 	@RequestMapping("deleteUser")
 	public ModelAndView deleteUser(@RequestParam int id) {
-		ModelAndView mav = new ModelAndView("deleteUser.jsp");
-		UserTable userTable = userDao.findById(id).orElse(new UserTable());
-		userDao.deleteById(id);
-		mav.addObject(userTable);
+		UserTable userTable = userDao.findById(id).orElse(null);
+		if(userTable == null) {
+			mav = new ModelAndView("userNotExist.jsp");
+			mav.addObject("message"," delete ");
+		}else {
+			mav = new ModelAndView("deleteUser.jsp");
+			userDao.deleteById(id);
+			mav.addObject(userTable);
+		}
 		return mav;
 	}
 	
 	@RequestMapping("updateUser")
 	public ModelAndView updateUser(@RequestParam int id) {
-		ModelAndView mav = new ModelAndView("updateUser.jsp");
 		UserTable userTable = userDao.findById(id).orElse(null);
 		if(userTable == null) {
-			mav.addObject("message","User didn't exist");
+			mav = new ModelAndView("userNotExist.jsp");
+			mav.addObject("message"," update ");
 		}else {
+			mav = new ModelAndView("updateUser.jsp");
 			userDao.deleteById(id);
-			mav.addObject("userTable",userTable);
+			mav.addObject(userTable);
 		}
 		return mav;
 	}

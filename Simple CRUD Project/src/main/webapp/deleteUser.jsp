@@ -4,12 +4,8 @@
 	</head>
 	<body>
 		<h2> Deleted User information </h2>
-			<c:if test = "${userTable.name != null}">
-				${userTable} deleted...
-			</c:if>
-			
-			<c:if test = "${userTable.name == null}">
-				${message}
-			</c:if>
+
+				${userTable.id} - ${userTable.name} <br>
 	</body>
+	<a href = "home.jsp"> Return to the home page </a>
 </html>

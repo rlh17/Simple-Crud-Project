@@ -4,11 +4,8 @@
 	</head>
 	<body>
 		<h2> User information </h2>
-			<c:if test = "${userTable.name == null}">
-				${message}...
-			</c:if>
-			<c:if test = "${userTable.name != null}">
-				${userTable.id} - ${userTable.name}
-			</c:if>
+			${userTable.id} - ${userTable.name} <br>
 	</body>
+	
+	<a href = "home.jsp"> Return to the home page </a>
 </html>
